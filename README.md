@@ -57,3 +57,60 @@ python lock.py
 ### 许可证
 
 Unlicense – 无任何使用限制
+# SelfControlLock
+
+A Python script that locks the computer during a specified time window and requires a configurable number of emergency clicks to unlock. Disables Task Manager and blocks keyboard input while locked.
+
+## Features
+
+- Schedule lock start and end times (month.day.hour:minute)
+- Emergency unlock via repeated button clicks (default 3000 clicks)
+- Automatic state persistence across reboots
+- Optional startup registration
+- Disables Task Manager (`DisableTaskMgr` registry key)
+- Blocks keyboard input using `pynput`
+
+## Requirements
+
+- Python 3.6+
+- Windows OS (registry and full‑screen lock rely on Windows APIs)
+- Dependencies:
+  - `pynput`
+  - `tkinter` (included with standard Python)
+
+Install dependencies:
+```bash
+pip install pynput
+```
+
+## Usage
+
+Run the script:
+```bash
+python lock.py
+```
+
+1. Enter start and end time in format `month.day.hour:minute` (e.g., `12.31.23:59`).
+2. Set the required number of emergency clicks (minimum 100).
+3. Optionally enable “开机自启动” (run on Windows login).
+4. Click “开始锁机”.
+
+While locked:
+- The screen is full‑window and always on top.
+- Keyboard input is blocked.
+- Click “紧急退出” repeatedly until the click counter reaches the threshold.
+- The lock automatically ends when the scheduled end time is reached.
+
+## State File
+
+`lock_state.json` stores the lock schedule, click count, and lock status. The script restores the lock state if restarted while locked.
+
+## Limitations
+
+- Does not block mouse input (only keyboard).
+- Full‑screen lock can be bypassed by terminating the process (Task Manager is disabled, but other process killers may work).
+- Time parsing is year‑sensitive: assumes the current year; crossing a year boundary requires manual adjustment.
+
+## License
+
+Unlicense – free for any use.
